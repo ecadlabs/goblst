@@ -19,6 +19,7 @@ package minsig
 import (
 	"bytes"
 	"crypto"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -148,7 +149,7 @@ func (sig *Signature) Bytes() []byte {
 }
 
 func (sig *Signature) String() string {
-	return fmt.Sprintf("bls12-381-minsig:[%s]", sig.Bytes())
+	return fmt.Sprintf("bls12-381-minsig:[%s]", hex.EncodeToString(sig.Bytes()))
 }
 
 func (sig *Signature) IsValid() error {

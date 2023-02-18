@@ -19,6 +19,7 @@ package minpk
 import (
 	"bytes"
 	"crypto"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -149,7 +150,7 @@ func (sig *Signature) Bytes() []byte {
 
 // required by Signatory
 func (sig *Signature) String() string {
-	return fmt.Sprintf("bls12-381-minpk:[%s]", sig.Bytes())
+	return fmt.Sprintf("bls12-381-minpk:[%s]", hex.EncodeToString(sig.Bytes()))
 }
 
 func (sig *Signature) IsValid() error {
