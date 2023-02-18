@@ -147,6 +147,10 @@ func (sig *Signature) Bytes() []byte {
 	return (*blst.P1Affine)(sig).Compress()
 }
 
+func (sig *Signature) String() string {
+	return fmt.Sprintf("bls12-381-minsig:[%s]", sig.Bytes())
+}
+
 func (sig *Signature) IsValid() error {
 	switch {
 	case (*blst.P1Affine)(sig).IsInf():
