@@ -172,7 +172,7 @@ func AggregateSignatures(sigs []*Signature) (*Signature, error) {
 	}
 	acc := (*blst.P1Affine)(sigs[0]).Jacobian()
 	for i := 1; i < len(sigs); i++ {
-		acc.AddOrDoubleAffine((*blst.P1Affine)(sigs[1]))
+		acc.AddOrDoubleAffine((*blst.P1Affine)(sigs[i]))
 	}
 	return (*Signature)(acc.Affine()), nil
 }
@@ -233,5 +233,5 @@ func (sig *Signature) AggregateVerify(items []*PubDigestPair, scheme blst.Scheme
 		pairs:  items,
 		scheme: scheme,
 	}
-	return (*blst.P1Affine)(sig).CoreAggregateVerify(true, pairs, true, true, scheme.SuiteG(2))
+	return (*blst.P1Affine)(sig).CoreAggregateVerify(true, pairs, true, true, scheme.SuiteG(1))
 }

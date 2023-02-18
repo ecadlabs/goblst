@@ -172,7 +172,7 @@ func AggregateSignatures(sigs []*Signature) (*Signature, error) {
 	}
 	acc := (*blst.P2Affine)(sigs[0]).Jacobian()
 	for i := 1; i < len(sigs); i++ {
-		acc.AddOrDoubleAffine((*blst.P2Affine)(sigs[1]))
+		acc.AddOrDoubleAffine((*blst.P2Affine)(sigs[i]))
 	}
 	return (*Signature)(acc.Affine()), nil
 }
