@@ -41,6 +41,7 @@ func runInParallel(n int, fn func(i int) error) error {
 			if atomic.CompareAndSwapInt32(&hasErr, 0, 1) {
 				err = e
 			}
+			wg.Done()
 		}(i)
 	}
 	wg.Wait()
