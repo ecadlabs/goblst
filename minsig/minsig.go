@@ -98,6 +98,10 @@ func (priv *PrivateKey) Equal(x crypto.PrivateKey) bool {
 	return false
 }
 
+func (priv *PrivateKey) Bytes() []byte {
+	return (*blst.Scalar)(priv).Bytes()
+}
+
 type PublicKey blst.P2Affine
 
 func PublicKeyFromBytes(data []byte) (*PublicKey, error) {
