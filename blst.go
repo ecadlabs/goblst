@@ -104,11 +104,24 @@ func GenerateKey(ikm []byte) (*Scalar, error) {
 }
 
 func ScalarFromBytes(data []byte) (*Scalar, error) {
+	return ScalarFromLEBytes(data)
+}
+
+func ScalarFromLEBytes(data []byte) (*Scalar, error) {
 	if len(data) != ScalarByteLength {
 		return nil, fmt.Errorf("blst: wrong scalar byte length: %d", len(data))
 	}
 	var out scalar
 	C.blst_scalar_from_lendian(&out, (*C.uint8_t)(&data[0]))
+	return (*Scalar)(&out), nil
+}
+
+func ScalarFromBEBytes(data []byte) (*Scalar, error) {
+	if len(data) != ScalarByteLength {
+		return nil, fmt.Errorf("blst: wrong scalar byte length: %d", len(data))
+	}
+	var out scalar
+	C.blst_scalar_from_bendian(&out, (*C.uint8_t)(&data[0]))
 	return (*Scalar)(&out), nil
 }
 
@@ -136,9 +149,20 @@ func (s *Scalar) P2Affine() *P2Affine {
 	return (*P2Affine)(&p)
 }
 
+// Bytes returns LE representation for Tezos
 func (s *Scalar) Bytes() []byte {
+	return s.LEBytes()
+}
+
+func (s *Scalar) LEBytes() []byte {
 	var out [ScalarByteLength]byte
 	C.blst_lendian_from_scalar((*C.uint8_t)(&out[0]), (*scalar)(s))
+	return out[:]
+}
+
+func (s *Scalar) BEBytes() []byte {
+	var out [ScalarByteLength]byte
+	C.blst_bendian_from_scalar((*C.uint8_t)(&out[0]), (*scalar)(s))
 	return out[:]
 }
 
